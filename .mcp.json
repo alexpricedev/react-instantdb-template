@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "instant": {
+      "type": "http",
+      "url": "https://mcp.instantdb.com/mcp"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@automatalabs/mcp-server-playwright"
+      ]
+    },
+    "puppeteer": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ],
+      "env": {}
+    }
+  }
+}
