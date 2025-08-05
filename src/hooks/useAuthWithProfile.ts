@@ -1,4 +1,5 @@
-import { db, User, Profile } from '../lib/instant';
+import { db } from '../lib/instant';
+import type { User, Profile } from '../../instant.schema';
 
 interface AuthWithProfile {
   user: User | null;
@@ -32,7 +33,7 @@ export function useAuthWithProfile(): AuthWithProfile {
   // Overall loading state
   const isLoading = authLoading || Boolean(user && profileLoading);
 
-  // User needs display name if they're authenticated but have no profile
+  // User needs handle if they're authenticated but have no profile
   const needsDisplayName = Boolean(user && !isLoading && !profile);
 
   return {

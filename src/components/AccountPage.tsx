@@ -1,50 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { db } from '../lib/instant';
 import { useAuth } from './AuthProvider';
 import { useToast } from './ToastProvider';
-import { db } from '../lib/instant';
 
 export function AccountPage() {
   const { user, profile } = useAuth();
   const { showToast } = useToast();
-  const [displayName, setDisplayName] = useState('');
+  const [handle, setHandle] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState('');
-  // Load user's flows for statistics
-  const { data: flowsData } = db.useQuery(
-    user
+
+  // Load user's posts for statistics
+  const { data: postsData } = db.useQuery(
+    user && profile
       ? {
-          flows: {
+          posts: {
             $: {
               where: {
-                userId: user.id,
+                'author.id': profile.id,
               },
             },
           },
         }
-      : {}
+      : null
   );
 
   // Profile is now available from auth context
   useEffect(() => {
     if (profile) {
-      setDisplayName(profile.displayName || '');
+      setHandle(profile.handle || '');
     }
   }, [profile]);
 
-  // Calculate flow statistics
-  const totalFlows = flowsData?.flows?.length || 0;
-  const publicFlows =
-    flowsData?.flows?.filter(flow => flow.isPublic).length || 0;
+  // Calculate post statistics
+  const totalPosts = postsData?.posts?.length || 0;
+  const publishedPosts =
+    postsData?.posts?.filter(post => post.published).length || 0;
 
-  const handleUpdateDisplayName = async (e: React.FormEvent) => {
+  const handleUpdateHandle = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (displayName.length < 3) {
-      setError('Display name must be at least 3 characters long');
+    if (handle.length < 3) {
+      setError('Handle must be at least 3 characters long');
       return;
     }
 
-    if (displayName === profile?.displayName) {
+    if (handle === profile?.handle) {
       return; // No change
     }
 
@@ -56,18 +57,17 @@ export function AccountPage() {
       if (profile && profile.id) {
         await db.transact(
           db.tx.profiles[profile.id].update({
-            displayName: displayName.trim(),
-            updatedAt: Date.now(),
+            handle: handle.trim(),
           })
         );
       }
 
-      showToast('Display name updated successfully!', 'success');
+      showToast('Handle updated successfully!', 'success');
     } catch (error: unknown) {
       if (error instanceof Error && error.message?.includes('unique')) {
-        setError('This display name is already taken. Please choose another.');
+        setError('This handle is already taken. Please choose another.');
       } else {
-        setError('Failed to update display name. Please try again.');
+        setError('Failed to update handle. Please try again.');
       }
     } finally {
       setIsUpdating(false);
@@ -121,22 +121,26 @@ export function AccountPage() {
               </p>
             </div>
 
-            {/* Display Name */}
-            <form onSubmit={handleUpdateDisplayName}>
+            {/* Handle */}
+            <form onSubmit={handleUpdateHandle}>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Display Name
+                <label
+                  htmlFor="handle-input"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Handle
                 </label>
                 <div className="flex gap-3">
                   <input
+                    id="handle-input"
                     type="text"
-                    value={displayName}
+                    value={handle}
                     onChange={e => {
-                      setDisplayName(e.target.value);
+                      setHandle(e.target.value);
                       setError('');
                     }}
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Enter your display name"
+                    placeholder="Enter your handle"
                     disabled={isUpdating}
                     minLength={3}
                     maxLength={30}
@@ -144,8 +148,8 @@ export function AccountPage() {
                   <button
                     type="submit"
                     disabled={
-                      displayName.length < 3 ||
-                      displayName === profile?.displayName ||
+                      handle.length < 3 ||
+                      handle === profile?.handle ||
                       isUpdating
                     }
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
@@ -155,8 +159,8 @@ export function AccountPage() {
                 </div>
                 {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
                 <p className="text-gray-500 text-sm mt-1">
-                  This name will be shown in the public gallery when you share
-                  flows. Minimum 3 characters, must be unique.
+                  Your unique username in the app. Minimum 3 characters, must be
+                  unique.
                 </p>
               </div>
             </form>
@@ -169,15 +173,15 @@ export function AccountPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-2xl font-bold text-blue-600">
-                    {totalFlows}
+                    {totalPosts}
                   </div>
-                  <div className="text-sm text-gray-600">Total Flows</div>
+                  <div className="text-sm text-gray-600">Total Posts</div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-2xl font-bold text-green-600">
-                    {publicFlows}
+                    {publishedPosts}
                   </div>
-                  <div className="text-sm text-gray-600">Community Flows</div>
+                  <div className="text-sm text-gray-600">Published Posts</div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="text-2xl font-bold text-purple-600">

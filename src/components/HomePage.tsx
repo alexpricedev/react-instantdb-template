@@ -3,16 +3,7 @@ import { useState } from 'react';
 import { LoginModal } from './LoginModal';
 
 interface HomePageProps {
-  onPageChange: (
-    page:
-      | 'home'
-      | 'builder'
-      | 'gallery'
-      | 'public-gallery'
-      | 'poses-gallery'
-      | 'about'
-      | 'account'
-  ) => void;
+  onPageChange: (page: 'home' | 'about' | 'account') => void;
 }
 
 export function HomePage({ onPageChange }: HomePageProps) {
@@ -27,14 +18,12 @@ export function HomePage({ onPageChange }: HomePageProps) {
 
   const handleGetStarted = () => {
     if (user) {
-      onPageChange('builder');
+      // Navigate to your app's main functionality
+      // TODO: Replace with actual navigation to your app's main feature
+      onPageChange('account');
     } else {
       openLoginModal('signup');
     }
-  };
-
-  const handleExploreFlows = () => {
-    onPageChange('public-gallery');
   };
 
   return (
@@ -45,18 +34,17 @@ export function HomePage({ onPageChange }: HomePageProps) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-24">
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-                Build Perfect
+                Your Next
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                  AcroYoga Flows
+                  Great App
                 </span>
               </h1>
               <p className="text-xl sm:text-2xl text-gray-600 mb-4 max-w-3xl mx-auto">
-                Create seamless, connected sequences with our constrained flow
-                builder.
+                Built with React and InstantDB for real-time collaboration
               </p>
               <p className="text-lg text-gray-500 mb-8 max-w-2xl mx-auto">
-                Only add poses that flow naturally together. No more broken
-                transitions or impossible sequences.
+                Authentication, real-time data, and modern UI components ready
+                to customize
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -64,25 +52,23 @@ export function HomePage({ onPageChange }: HomePageProps) {
                   onClick={handleGetStarted}
                   className="w-full sm:w-auto bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
-                  {user ? 'Open Flow Builder' : 'Start Building Free'}
+                  {user ? 'Go to App' : 'Get Started Free'}
                 </button>
                 <button
-                  onClick={handleExploreFlows}
+                  onClick={() => onPageChange('about')}
                   className="w-full sm:w-auto bg-white text-gray-700 px-8 py-4 rounded-xl hover:bg-gray-50 transition-colors font-medium text-lg border border-gray-200 shadow-sm"
                 >
-                  Explore Community Flows
+                  Learn More
                 </button>
               </div>
 
               {/* Placeholder for hero image */}
               <div className="relative max-w-4xl mx-auto">
                 <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-8 border border-gray-200 shadow-xl">
-                  <div className="text-6xl mb-4">🤸‍♀️</div>
-                  <p className="text-gray-600 font-medium">
-                    Interactive Flow Builder Preview
-                  </p>
+                  <div className="text-6xl mb-4">⚡</div>
+                  <p className="text-gray-600 font-medium">Your App Preview</p>
                   <p className="text-sm text-gray-500 mt-2">
-                    Coming soon: Screenshots of the actual builder in action
+                    Add screenshots or demos of your application here
                   </p>
                 </div>
               </div>
@@ -95,11 +81,11 @@ export function HomePage({ onPageChange }: HomePageProps) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Why AcroKit Works Better
+                Built for Modern Development
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Traditional flow builders let you create impossible sequences.
-                We only show poses that actually connect.
+                Everything you need to build real-time, collaborative
+                applications
               </p>
             </div>
 
@@ -115,16 +101,17 @@ export function HomePage({ onPageChange }: HomePageProps) {
                     strokeWidth="2"
                     className="text-blue-600"
                   >
-                    <path d="M9 12l2 2 4-4" />
-                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Constraint-Based Building
+                  Real-time Database
                 </h3>
                 <p className="text-gray-600">
-                  Only see poses that can actually follow your current sequence.
-                  No more impossible transitions.
+                  InstantDB provides real-time data synchronization with
+                  optimistic updates
                 </p>
               </div>
 
@@ -139,15 +126,15 @@ export function HomePage({ onPageChange }: HomePageProps) {
                     strokeWidth="2"
                     className="text-green-600"
                   >
-                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                    <path d="M9 12l2 2 4-4" />
+                    <circle cx="12" cy="12" r="10" />
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Named Transitions
+                  Authentication Ready
                 </h3>
                 <p className="text-gray-600">
-                  Every connection has a proper name. Learn the vocabulary as
-                  you build your flows.
+                  Magic link authentication built-in with user management
                 </p>
               </div>
 
@@ -167,62 +154,11 @@ export function HomePage({ onPageChange }: HomePageProps) {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Share & Practice
+                  Modern Stack
                 </h3>
                 <p className="text-gray-600">
-                  Save your flows, share them publicly, and practice with
-                  step-by-step guidance.
+                  React, TypeScript, Tailwind CSS, and Vitest for testing
                 </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Social Proof Section */}
-        <section className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                Trusted by AcroYoga Practitioners
-              </h2>
-              <p className="text-xl text-gray-600">
-                From beginners to advanced practitioners, AcroKit helps create
-                better flows.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Placeholder testimonials */}
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <div className="text-yellow-400 mb-3">⭐⭐⭐⭐⭐</div>
-                <p className="text-gray-600 mb-4">
-                  &ldquo;Finally, a tool that prevents me from creating flows
-                  with impossible transitions. Game changer!&rdquo;
-                </p>
-                <div className="font-medium text-gray-900">Sarah Chen</div>
-                <div className="text-sm text-gray-500">Acroyoga Instructor</div>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <div className="text-yellow-400 mb-3">⭐⭐⭐⭐⭐</div>
-                <p className="text-gray-600 mb-4">
-                  &ldquo;The constraint-based approach taught me so much about
-                  proper flow design. Love it!&rdquo;
-                </p>
-                <div className="font-medium text-gray-900">
-                  Marcus Rodriguez
-                </div>
-                <div className="text-sm text-gray-500">Workshop Leader</div>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <div className="text-yellow-400 mb-3">⭐⭐⭐⭐⭐</div>
-                <p className="text-gray-600 mb-4">
-                  &ldquo;My students love practicing the flows I create with
-                  AcroKit. Everything just works!&rdquo;
-                </p>
-                <div className="font-medium text-gray-900">Emma Thompson</div>
-                <div className="text-sm text-gray-500">Acro Teacher</div>
               </div>
             </div>
           </div>
@@ -232,12 +168,12 @@ export function HomePage({ onPageChange }: HomePageProps) {
         <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Ready to Build Better Flows?
+              Ready to Build Something Great?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
               {user
-                ? 'Jump back into the flow builder and create your next sequence.'
-                : 'Join thousands of practitioners creating smarter acroyoga sequences.'}
+                ? 'Welcome back! Start building your next feature.'
+                : 'Join thousands of developers building with modern tools.'}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -270,16 +206,16 @@ export function HomePage({ onPageChange }: HomePageProps) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="grid md:grid-cols-4 gap-8">
               <div className="md:col-span-2">
-                <h3 className="text-xl font-bold mb-3">AcroKit</h3>
+                <h3 className="text-xl font-bold mb-3">Your App Name</h3>
                 <p className="text-gray-400 mb-4">
-                  The constrained flow builder for acroyoga sequences. Create
-                  flows that actually work.
+                  Built with React and InstantDB. Customize this template to
+                  create your next great application.
                 </p>
                 <button
                   onClick={() => onPageChange('about')}
                   className="text-blue-400 hover:text-blue-300 transition-colors"
                 >
-                  Learn More About AcroKit →
+                  Learn More →
                 </button>
               </div>
 
@@ -288,26 +224,10 @@ export function HomePage({ onPageChange }: HomePageProps) {
                 <ul className="space-y-2 text-gray-400">
                   <li>
                     <button
-                      onClick={() => onPageChange('builder')}
+                      onClick={() => onPageChange('about')}
                       className="hover:text-white transition-colors"
                     >
-                      Flow Builder
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => onPageChange('public-gallery')}
-                      className="hover:text-white transition-colors"
-                    >
-                      Community Flows
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => onPageChange('poses-gallery')}
-                      className="hover:text-white transition-colors"
-                    >
-                      Poses Gallery
+                      About
                     </button>
                   </li>
                 </ul>
@@ -318,14 +238,6 @@ export function HomePage({ onPageChange }: HomePageProps) {
                 <ul className="space-y-2 text-gray-400">
                   {user ? (
                     <>
-                      <li>
-                        <button
-                          onClick={() => onPageChange('gallery')}
-                          className="hover:text-white transition-colors"
-                        >
-                          Your Flows
-                        </button>
-                      </li>
                       <li>
                         <button
                           onClick={() => onPageChange('account')}
@@ -360,7 +272,10 @@ export function HomePage({ onPageChange }: HomePageProps) {
             </div>
 
             <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-              <p>&copy; 2024 AcroKit. Built for the acroyoga community.</p>
+              <p>
+                &copy; 2024 Your App Name. Built with React + InstantDB
+                Template.
+              </p>
             </div>
           </div>
         </footer>

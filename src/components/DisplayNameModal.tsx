@@ -5,7 +5,7 @@ import { db, id } from '../lib/instant';
 
 interface DisplayNameModalProps {
   isOpen: boolean;
-  onClose: (displayName: string) => void;
+  onClose: (handle: string) => void;
   userEmail: string;
 }
 
@@ -14,7 +14,7 @@ export function DisplayNameModal({
   onClose,
   userEmail,
 }: DisplayNameModalProps) {
-  const [displayName, setDisplayName] = useState('');
+  const [handle, setHandle] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const { showToast } = useToast();
@@ -23,8 +23,8 @@ export function DisplayNameModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (displayName.length < 3) {
-      setError('Display name must be at least 3 characters long');
+    if (handle.length < 3) {
+      setError('Handle must be at least 3 characters long');
       return;
     }
 
@@ -32,28 +32,26 @@ export function DisplayNameModal({
     setError('');
 
     try {
-      // Create or update the user's profile with display name
+      // Create or update the user's profile with handle
       if (user) {
         const profileId = id();
-        await db.transact(
-          db.tx.profiles[profileId]
-            .update({
-              displayName: displayName.trim(),
-              createdAt: Date.now(),
-              updatedAt: Date.now(),
-            })
-            .link({ $user: user.id })
-        );
+        await db.transact([
+          db.tx.profiles[profileId].update({
+            handle: handle.trim(),
+            createdAt: Date.now(),
+          }),
+          db.tx.profiles[profileId].link({ $user: user.id }),
+        ]);
       }
 
-      showToast('Display name saved successfully!', 'success');
-      onClose(displayName.trim());
+      showToast('Handle saved successfully!', 'success');
+      onClose(handle.trim());
     } catch (error: unknown) {
       if (error instanceof Error && error.message?.includes('unique')) {
-        setError('This display name is already taken. Please choose another.');
+        setError('This handle is already taken. Please choose another.');
       } else {
         setError(
-          `Failed to save display name: ${error instanceof Error ? error.message : 'Please try again.'}`
+          `Failed to save handle: ${error instanceof Error ? error.message : 'Please try again.'}`
         );
       }
     } finally {
@@ -68,30 +66,33 @@ export function DisplayNameModal({
       <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-2">
-            Choose your display name
+            Choose your handle
           </h2>
           <p className="text-gray-600 text-sm">
-            We need a display name to show who created flows in the public
-            gallery. This helps the community connect with flow creators.
+            We need a handle to identify you in the app. This will be your
+            unique username.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Display name *
+            <label
+              htmlFor="handle-input"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Handle *
             </label>
             <input
+              id="handle-input"
               type="text"
-              value={displayName}
+              value={handle}
               onChange={e => {
-                setDisplayName(e.target.value);
+                setHandle(e.target.value);
                 setError('');
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter your display name"
+              placeholder="Enter your handle"
               disabled={isSubmitting}
-              autoFocus
               minLength={3}
               maxLength={30}
             />
@@ -110,10 +111,10 @@ export function DisplayNameModal({
 
           <button
             type="submit"
-            disabled={displayName.length < 3 || isSubmitting}
+            disabled={handle.length < 3 || isSubmitting}
             className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
-            {isSubmitting ? 'Saving...' : 'Save Display Name'}
+            {isSubmitting ? 'Saving...' : 'Save Handle'}
           </button>
         </form>
       </div>

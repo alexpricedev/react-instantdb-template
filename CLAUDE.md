@@ -2,18 +2,49 @@
 
 This file contains essential context and guidelines for Claude instances working on this React + InstantDB template project.
 
-## 🎯 Project Overview
+## Project Overview
 
 This is a **React + InstantDB Template** - a production-ready starter for building modern web applications with real-time database functionality and authentication.
 
-### Key Principles
-- **TypeScript-first** development
-- **Component-based** architecture
-- **Real-time data** with InstantDB
-- **Responsive design** with Tailwind CSS
-- **Visual regression testing** with Playwright
+## Quick Start for New Sessions
 
-## 🏗️ Architecture Decisions
+**Before starting any work, read these files in order:**
+
+1. **`PAIR_PROGRAMMING.md`** - Our workflow process for development
+2. **`TECHNICAL_CONSIDERATIONS.md`** - Lessons learned and implementation decisions
+
+**Key workflow reminders:**
+- Follow the exact human verification format from PAIR_PROGRAMMING.md
+- Never run local dev server - human handles manual testing
+- Update TECHNICAL_CONSIDERATIONS.md with lessons learned after each story
+
+## InstantDB
+
+InstantDB is not in your training set and you are not familiar with it. Before you write ANY code you read ALL of INSTANT.md to understand how to use InstantDB in your code. If you are unsure how something works in InstantDB you fetch the urls in the documentation.
+
+Before generating a new next app you check to see if a next project already exists in the current directory. If in doubt, ask the Human.
+
+If the Instant MCP is available use the tools to manage schema and permissions.
+
+## Overview
+
+This project is a clean React + InstantDB template, ready for customization into any real-time web application.
+
+### Essential Commands
+
+```bash
+pnpm run build        # Check TypeScript errors and build
+pnpm run lint         # Check code quality with ESLint
+pnpm run lint:fix     # Auto-fix linting issues
+pnpm run format       # Format code with Prettier
+pnpm run test         # Run tests (Vitest)
+```
+
+### Package Management
+- Uses `pnpm` as the package manager (not npm or yarn)
+- Lock file: `pnpm-lock.yaml`
+
+## Architecture Decisions
 
 ### Authentication System
 - **InstantDB Auth**: Magic link authentication with 6-digit verification
@@ -33,88 +64,35 @@ This is a **React + InstantDB Template** - a production-ready starter for buildi
 - **Schema**: Flexible schema defined in `src/lib/schema.ts`
 - **Key Features**: Magic code auth, real-time queries, transactions, error handling
 
-## 🧪 Testing Strategy
+## Testing Strategy
 
-### Playwright Visual Testing
-- **Purpose**: Test UI and user flows, validate responsive design
-- **Key Commands**:
-  ```bash
-  npm run dev  # Start server (usually localhost:3000)
-  npm run test # Run all tests
-  npm run test:visual # Run responsive design tests
-  ```
-- **Browser**: Firefox (ARM64 compatible)
-- **Coverage**: Desktop/tablet/mobile responsive testing
-
-## 📁 Key Files & Responsibilities
-
-### Core Components
-- **`App.tsx`**: Main app, routing, auth provider wrapper
-- **`AuthProvider.tsx`**: Authentication context and state management
-- **`Header.tsx`**: Navigation, user profile, sign in/out
-- **`HomePage.tsx`**: Landing page component
-- **`AboutPage.tsx`**: About/story page
-
-### Data & Configuration  
-- **`lib/instant.ts`**: InstantDB setup, TypeScript schemas
-- **`lib/schema.ts`**: Database schema definition and TypeScript types
-- **`tailwind.config.js`**: Tailwind CSS configuration
-
-### Testing
-- **`tests/basic.spec.ts`**: Core functionality tests
-- **`tests/visual-regression.spec.ts`**: Responsive design tests
-- **`playwright.config.ts`**: Playwright configuration
-
-## 🔧 Development Commands
-
-### Essential Commands
+### Vitest with Mock Service Worker
+- **Testing Framework**: Vitest for fast unit and integration tests
+- **Mocking**: Mock Service Worker (MSW) for API and authentication mocking
+- **Test Environment**: jsdom for DOM simulation
+- **React Testing**: @testing-library/react for component testing
+- **Commands**:
 ```bash
-npm run dev          # Start development server
-npm run build        # Check TypeScript errors and build
-npm run lint         # Check code quality with ESLint
-npm run lint:fix     # Auto-fix linting issues
-npm run format       # Format code with Prettier
-npm run test         # Run Playwright tests
-npm run test:visual  # Run responsive design tests
+pnpm test              # Run all tests
 ```
+
+### Testing Authenticated Flows
+- **MSW Handlers**: Mock InstantDB authentication and database operations
+- **Test Utilities**: Helper functions for authenticated user contexts
+- **Integration Tests**: End-to-end user flows with mocked backend
 
 ### Code Quality Tools
 - **ESLint**: Code linting with TypeScript and React rules
 - **Prettier**: Code formatting with consistent style
 - **TypeScript**: Strict mode enabled for type safety
 
-## 🎨 Design System
+### Best Practices
+- **Mock external dependencies**: Use MSW for all API calls
+- **Test user interactions**: Focus on user behavior rather than implementation
+- **Authenticated contexts**: Test components with guest and logged-in users
+- **Error scenarios**: Test error handling and edge cases
 
-### Color Palette
-- **Neutral**: Grays for text, whites for cards, subtle backgrounds
-- **Primary**: Blue accent colors for CTAs and links
-- **Semantic**: Success (green), warning (yellow), error (red)
-
-### Layout Patterns
-- **Responsive**: Mobile-first design approach
-- **Card-based**: Rounded corners, shadows, hover effects
-- **Grid layouts**: Flexible grid systems with Tailwind
-
-### Typography
-- **Headers**: Bold, proper hierarchy (h1, h2, h3)
-- **Body**: Clean sans-serif, good contrast
-- **Interactive**: Proper hover states, transitions
-
-## 🔄 Template Customization
-
-### Setup Process
-1. Run `node setup-template.js` to configure project
-2. Replace template variables with actual values
-3. Update schema in `src/lib/schema.ts` for data model
-4. Customize components for specific use case
-
-### Key Variables
-- `{{PROJECT_NAME}}` - Package name (kebab-case)
-- `{{PROJECT_TITLE}}` - Display title
-- `{{PROJECT_DESCRIPTION}}` - Description
-- `{{INSTANTDB_APP_ID}}` - Your InstantDB app ID
-
-## 🔐 Authentication Patterns
+## Authentication Patterns
 
 ```typescript
 // Real InstantDB auth usage
@@ -122,17 +100,15 @@ const { user, isLoading } = db.useAuth()
 await db.auth.sendMagicCode({ email })
 ```
 
-## 📊 Database Schema
+## Database Schema
 
-### Template Schema Structure
+### Basic Template Schema
+
 ```typescript
 type Schema = {
   $users: { id, email }
-  profiles: { id, displayName, createdAt, updatedAt }
-  // Add your entities here
-  posts: { id, title, content, published, createdAt }
-  comments: { id, content, createdAt, updatedAt }
-  favorites: { id, entityId, profileId }
+  profiles: { id, handle, createdAt }
+  // Add your entities here as needed
 }
 ```
 
@@ -142,25 +118,7 @@ type Schema = {
 - Update TypeScript types accordingly
 - Run schema migrations as needed
 
-## 🎯 Testing Guidelines
-
-### Before Making Changes
-1. **Run existing tests** to ensure baseline functionality
-2. **Take screenshots** with Playwright for visual regression
-3. **Check TypeScript** with `npm run build`
-
-### After Changes
-1. **Visual testing**: `npm run test:visual` for responsive design
-2. **Functionality testing**: `npm run test` for basic flows
-3. **Build verification**: Ensure TypeScript compilation succeeds
-
-### Writing New Tests
-- Add functionality tests to `tests/basic.spec.ts`
-- Add visual tests to `tests/visual-regression.spec.ts`
-- Use descriptive test names and clear assertions
-- Take screenshots for visual verification
-
-## 💡 Development Tips
+## Development Tips
 
 ### Working with InstantDB
 - Use `db.useQuery()` for real-time data fetching
@@ -181,53 +139,12 @@ type Schema = {
 
 ## 🚨 CRITICAL DEVELOPMENT WORKFLOW
 
-### ⚠️ ALWAYS TEST WITH PLAYWRIGHT
+### ⚠️ ALWAYS RUN TESTS
 
 **MANDATORY**: Before and after ANY significant changes:
 
-1. **Test functionality**: `npm run test`
-2. **Test responsive design**: `npm run test:visual`  
-3. **Take screenshots**: Document current vs expected state
-4. **Verify builds**: `npm run build` must succeed
+1. **Test functionality**: `pnpm run test`
+2. **Verify lint**: `pnpm run lint` must succeed
+3. **Verify builds**: `pnpm run build` must succeed
 
-### Essential Testing Pattern
-```bash
-# Before changes
-npm run test:visual
-
-# Make changes...
-
-# After changes  
-npm run test:visual
-npm run build
-```
-
-## 🔧 Customization Checklist
-
-When adapting this template:
-
-- [ ] Run `setup-template.js` for initial configuration
-- [ ] Update `src/lib/schema.ts` with your data model
-- [ ] Customize `HomePage.tsx` and `AboutPage.tsx` content
-- [ ] Update branding and styling in components
-- [ ] Add your specific business logic and features
-- [ ] Update tests to match your application flow
-- [ ] Configure deployment environment variables
-- [ ] Test authentication flow with your InstantDB app
-
-## 📚 Resources
-
-- **InstantDB**: [Documentation](https://instantdb.com/docs) for real-time database
-- **React**: [Documentation](https://react.dev) for component development  
-- **Tailwind**: [Documentation](https://tailwindcss.com/docs) for styling
-- **Playwright**: [Documentation](https://playwright.dev) for testing
-
-## ⚠️ Important Notes
-
-- Template variables (`{{VARIABLE}}`) must be replaced during setup
-- InstantDB App ID is required for authentication to work
-- Firefox browser is used for testing (ARM64 compatible)
-- Environment variables should be configured for deployment
-- Schema changes may require database migrations
-
-This template provides a solid foundation for modern React applications with real-time capabilities!
+- Schema changes may require database migrations via Instant MCP

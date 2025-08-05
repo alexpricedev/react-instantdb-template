@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { db } from '../lib/instant';
 import { useAuthWithProfile } from '../hooks/useAuthWithProfile';
-import { User, Profile } from '../lib/instant';
+import type { User, Profile } from '../../instant.schema';
 
 interface AuthContextType {
   user: User | null;
