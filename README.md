@@ -6,7 +6,7 @@ A production-ready React template with InstantDB integration, authentication, re
 
 ### 1. Setup Template
 ```bash
-git clone <this-repo> my-new-project
+git clone git@github.com:alexpricedev/react-instantdb-template.git my-new-project
 cd my-new-project
 node setup-template.js
 ```
