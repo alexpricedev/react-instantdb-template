@@ -16,7 +16,14 @@ node setup-template.js
 pnpm install
 ```
 
-### 3. Start Development
+### 3. Push InstantDB Schema & Perms
+- Ensure `.env` contains your `VITE_INSTANTDB_APP_ID`.
+- Using Instant CLI:
+  - Push schema: `npx instant-cli@latest push schema`
+  - Push permissions: `npx instant-cli@latest push perms`
+  - Alternatively: use the Instant MCP to manage schema and rules.
+
+### 4. Start Development
 ```bash
 pnpm run dev
 ```
