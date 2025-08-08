@@ -65,8 +65,8 @@ src/
 │   └── ...
 ├── lib/                # Core utilities
 │   └── instant.ts      # InstantDB configuration
-instant.schema.ts      # Database schema and types (project root)
-└── main.tsx           # App entry point
+├── instant.schema.ts   # Database schema and types (project root)
+└── main.tsx            # App entry point
 
 tests/                 # Vitest tests
 └── schema.test.ts     # Example test
