@@ -13,12 +13,12 @@ node setup-template.js
 
 ### 2. Install Dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### 3. Start Development
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ## ✨ Features
@@ -42,10 +42,7 @@ npm run dev
 - Loading states
 
 ### 🧪 Testing
-- **Playwright** visual regression tests
-- Firefox browser support (ARM64 compatible)
-- Responsive design testing
-- Screenshot generation
+- **Vitest** unit and integration tests
 
 ### 🛠️ Development Tools
 - **ESLint** + **Prettier** for code quality
@@ -67,13 +64,12 @@ src/
 │   ├── useAuthWithProfile.ts
 │   └── ...
 ├── lib/                # Core utilities
-│   ├── instant.ts      # InstantDB configuration
-│   └── schema.ts       # Database schema and types
+│   └── instant.ts      # InstantDB configuration
+instant.schema.ts      # Database schema and types (project root)
 └── main.tsx           # App entry point
 
-tests/                  # Playwright tests
-├── basic.spec.ts      # Functionality tests
-└── visual-regression.spec.ts # UI tests
+tests/                 # Vitest tests
+└── schema.test.ts     # Example test
 ```
 
 ## 🗄️ Database Schema
@@ -88,7 +84,7 @@ The template includes a flexible schema with:
 
 ### Customizing the Schema
 
-Edit `src/lib/schema.ts` to define your data model:
+Edit `instant.schema.ts` (project root) to define your data model:
 
 ```typescript
 export const schema = i.schema({
@@ -150,17 +146,11 @@ function MyComponent() {
 
 ### Commands
 ```bash
-npm run test          # Run all tests
-npm run test:visual   # Responsive design tests
-npm run test:headed   # Tests with visible browser
-npm run test:report   # View HTML test report
+pnpm run test          # Run all tests (Vitest)
 ```
 
 ### Test Types
-- **Basic functionality** - Navigation, forms, auth flow
-- **Visual regression** - Screenshot comparison
-- **Responsive design** - Mobile/tablet/desktop layouts
-- **Cross-browser** - Firefox support (ARM64 compatible)
+- **Unit and integration** - Components and utilities
 
 ### Writing Tests
 ```typescript
@@ -175,8 +165,8 @@ test('homepage loads correctly', async ({ page }) => {
 
 ### Prepare for Production
 ```bash
-npm run build    # Build production bundle
-npm run preview  # Preview production build
+pnpm run build    # Build production bundle
+pnpm run preview  # Preview production build
 ```
 
 ### Environment Variables
@@ -195,9 +185,9 @@ VITE_INSTANTDB_APP_ID=your-production-app-id
 
 ### 1. Code Quality
 ```bash
-npm run lint        # Check code issues
-npm run lint:fix    # Auto-fix issues
-npm run format      # Format with Prettier
+pnpm run lint        # Check code issues
+pnpm run lint:fix    # Auto-fix issues
+pnpm run format      # Format with Prettier
 ```
 
 ### 2. Type Safety
@@ -214,7 +204,7 @@ npm run format      # Format with Prettier
 
 ### InstantDB
 - App ID in `.env` file
-- Schema definition in `src/lib/schema.ts`
+- Schema definition in `instant.schema.ts` (project root)
 - Real-time queries and mutations
 
 ### Tailwind CSS
@@ -222,10 +212,10 @@ npm run format      # Format with Prettier
 - Custom colors and utilities
 - Responsive breakpoints
 
-### Playwright
-- Browser configuration in `playwright.config.ts`
-- Firefox optimized for ARM64 compatibility
-- Screenshot generation and comparison
+### Vitest
+- Zero-config test runner
+- JSDOM or Node environments
+- Fast watch mode
 
 ## 🎯 Customization Guide
 
@@ -259,12 +249,11 @@ npm run format      # Format with Prettier
 - Ensure schema is properly deployed
 
 **Tests failing?**
-- Install Firefox: `npx playwright install firefox`
-- Check if dev server is running: `npm run dev`
-- Update screenshots: `npm run test:visual -- --update-snapshots`
+- Ensure dependencies are installed: `pnpm install`
+- Run tests with verbose output: `pnpm run test -- --reporter=verbose`
 
 **Build errors?**
-- Check TypeScript errors: `npm run build`
+- Check TypeScript errors: `pnpm run build`
 - Verify all imports are correct
 - Ensure environment variables are set
 
@@ -273,7 +262,6 @@ npm run format      # Format with Prettier
 - [InstantDB Documentation](https://instantdb.com/docs)
 - [React Documentation](https://react.dev)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Playwright Documentation](https://playwright.dev)
 
 ## 📄 License
 

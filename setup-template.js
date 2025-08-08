@@ -81,14 +81,12 @@ VITE_INSTANTDB_APP_ID=${appId}
   
   console.log('✅ Template setup complete!');
   console.log('\n📋 Next steps:');
-  console.log('1. npm install');
-  console.log('2. npm run dev');
+  console.log('1. pnpm install');
+  console.log('2. pnpm run dev');
   console.log('3. Customize your app in src/');
-  console.log('4. Update the schema in src/lib/schema.ts for your data model');
-  console.log('5. Run npm run seed to populate initial data');
+  console.log('4. Update the schema in instant.schema.ts (project root) for your data model');
   console.log('\n🧪 Testing:');
-  console.log('- npm run test (Playwright tests)');
-  console.log('- npm run test:visual (responsive design tests)');
+  console.log('- pnpm run test (Vitest tests)');
   
   rl.close();
 }

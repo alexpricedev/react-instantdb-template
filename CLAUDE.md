@@ -61,7 +61,7 @@ pnpm run test         # Run tests (Vitest)
 ### InstantDB Integration
 - **Database**: Real-time database with optimistic updates and authentication
 - **App ID**: Configurable via environment variables
-- **Schema**: Flexible schema defined in `src/lib/schema.ts`
+- **Schema**: Flexible schema defined in `instant.schema.ts` (project root)
 - **Key Features**: Magic code auth, real-time queries, transactions, error handling
 
 ## Testing Strategy
@@ -113,7 +113,7 @@ type Schema = {
 ```
 
 ### Extending the Schema
-- Add new entities in `src/lib/schema.ts`
+- Add new entities in `instant.schema.ts` (project root)
 - Define relationships with links
 - Update TypeScript types accordingly
 - Run schema migrations as needed
